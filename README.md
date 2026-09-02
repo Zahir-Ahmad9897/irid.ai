@@ -1,6 +1,21 @@
-# irid.ai - Biometric Intelligence Platform
+<div align="center">
+  <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/fingerprint.svg" alt="irid.ai logo" width="60" height="60">
+  
+  <h1>irid.ai</h1>
+  <p><strong>Enterprise-grade Biometric Intelligence Platform</strong></p>
 
-A full-stack, AI-powered biometric face recognition platform. irid.ai allows you to enroll identities, run real-time face verification, and manage a secure recognition gallery.
+  <p>
+    <a href="https://github.com/Zahir-Ahmad9897/irid.ai/issues"><img alt="Issues" src="https://img.shields.io/github/issues/Zahir-Ahmad9897/irid.ai?style=flat-square&color=B08D57"></a>
+    <a href="https://github.com/Zahir-Ahmad9897/irid.ai/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/Zahir-Ahmad9897/irid.ai?style=flat-square&color=B08D57"></a>
+    <img alt="Python 3.10" src="https://img.shields.io/badge/Python-3.10-blue?style=flat-square&logo=python&color=B08D57">
+    <img alt="React" src="https://img.shields.io/badge/React-18-blue?style=flat-square&logo=react&color=B08D57">
+    <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-0.100+-blue?style=flat-square&logo=fastapi&color=B08D57">
+  </p>
+</div>
+
+<br />
+
+A full-stack, AI-powered biometric face recognition platform. **irid.ai** allows you to enroll identities, run real-time face verification, and manage a secure recognition gallery with a beautifully crafted *Ink & Brass* interface.
 
 ## 🚀 Features
 
