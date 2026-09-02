@@ -20,6 +20,7 @@ A full-stack, AI-powered biometric face recognition platform. **irid.ai** allows
 ## 🚀 Features
 
 - **Secure Recognition**: Powered by ArcFace and FAISS for secure vector search.
+- **Custom Trained Models**: Built from scratch using the WebFace dataset for training and LFW for testing/evaluation. Utilizes iResNet50 as the backbone, SCRFD for face detection, and ArcFace for feature extraction.
 - **Fast & Accurate**: Uses 512-dimensional embeddings for blazing-fast inference.
 - **Live Video Recognition**: Stream directly from a camera with real-time bounding-box matching.
 - **Identity & Bulk Enrollment**: Register single subjects or drag-and-drop batch photos to enroll many identities at once.
