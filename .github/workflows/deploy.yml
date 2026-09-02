@@ -1,0 +1,23 @@
+name: Deploy to Render
+
+# Only deploy after CI pipeline succeeds on main
+on:
+  workflow_run:
+    workflows: ["CI — Test & Build"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy-backend:
+    name: Deploy Backend to Render
+    runs-on: ubuntu-latest
+    # Only deploy if CI passed
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Trigger Render Deploy Hook
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+        # This calls the Render deploy hook URL which triggers a rebuild.
+        # Set RENDER_DEPLOY_HOOK_URL in GitHub repo → Settings → Secrets → Actions.
+        # Get the URL from: Render Dashboard → Your Service → Settings → Deploy Hook.

@@ -1,0 +1,129 @@
+# ==============================================================================
+# OS & Editor generated files
+# ==============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# ==============================================================================
+# Environment & Secrets
+# ==============================================================================
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+secrets.json
+*.pem
+
+# ==============================================================================
+# Backend (Python / FastAPI)
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing / Logs
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# UV
+uv.lock
+
+# ==============================================================================
+# Models, Caches & Data (Do Not Track)
+# ==============================================================================
+# ONNX model weights (auto-downloaded)
+backend/models/*.onnx
+*.pt
+*.pth
+*.h5
+
+# Application Data (Volumes)
+backend/data/*.json
+backend/data/*.npy
+backend/data/*.faiss
+!backend/data/.gitkeep
+!backend/models/.gitkeep
+
+# Caches
+.insightface/
+.cache/
+huggingface_cache/
+
+# ==============================================================================
+# Frontend (Node / React)
+# ==============================================================================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.eslintcache
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnp/
+.pnp.js
+
+# ==============================================================================
+# Archives
+# ==============================================================================
+*.zip
+*.tar.gz
+*.rar
+*.7z
+# ==============================================================================
+# Docker
+# ==============================================================================
+docker-compose.override.yml
+*.pid
+
+# ==============================================================================
+# Databases (if any local testing DB is used)
+# ==============================================================================
+*.db
+*.sqlite3

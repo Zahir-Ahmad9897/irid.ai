@@ -1,0 +1,15 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+python-multipart==0.0.9
+pydantic==2.9.2
+python-dotenv==1.0.1
+
+numpy==1.26.4
+opencv-python-headless==4.10.0.84
+faiss-cpu==1.8.0.post1
+onnxruntime==1.19.2
+insightface==0.7.3
+huggingface_hub==0.25.1
+
+# Optional — only required if retraining/fine-tuning via src/model.py
+# torch==2.4.1

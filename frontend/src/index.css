@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens ────────────────────────────────────── */
+:root {
+  /* Ink & Brass Base */
+  --bg-color: #14151A;
+  --surface-base: #191A20;
+  --surface-elevated: #1E2026;
+  --surface-card: #24262C;
+  --surface-hover: #2A2D35;
+  
+  /* Text */
+  --on-surface: #EDEBE6;
+  --on-surface-variant: #6B6F76;
+  --on-surface-muted: #4A4D54;
+
+  /* Borders */
+  --border-subtle: rgba(107, 111, 118, 0.2);
+  --border-hover: rgba(107, 111, 118, 0.4);
+
+  /* Brass Accent */
+  --accent-brass: #B08D57;
+  --accent-brass-hover: #C5A069;
+  --accent-brass-soft: rgba(176, 141, 87, 0.15);
+
+  /* Desaturated Status Colors */
+  --status-success: #5A9D78;
+  --status-success-bg: rgba(90, 157, 120, 0.12);
+  --status-success-border: rgba(90, 157, 120, 0.25);
+  
+  --status-error: #BD5A5A;
+  --status-error-bg: rgba(189, 90, 90, 0.12);
+  --status-error-border: rgba(189, 90, 90, 0.25);
+  
+  --status-warning: #B09857;
+  --status-warning-bg: rgba(176, 152, 87, 0.12);
+  --status-warning-border: rgba(176, 152, 87, 0.25);
+  
+  --status-info: #5A7C9D;
+  --status-info-bg: rgba(90, 124, 157, 0.12);
+  --status-info-border: rgba(90, 124, 157, 0.25);
+
+  /* Shadows (Actual Elevation Only, No Glow) */
+  --shadow-level-2: 0 4px 12px 0 rgba(0, 0, 0, 0.3);
+  --shadow-level-3: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+
+  color-scheme: dark;
+}
+
+/* ── Base styles ──────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-color);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--on-surface);
+  min-height: 100vh;
+}
+
+/* ── Focus Rings (Ink & Brass) ────────────────────────── */
+*:focus-visible {
+  outline: 2px solid var(--accent-brass);
+  outline-offset: 2px;
+}
+
+a, button, input, select, textarea, [role='button'], [tabindex] {
+  outline: none;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role='button']:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent-brass);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Custom scrollbar ─────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--on-surface-variant);
+}
+
+/* ── Flat Matte Components ────────────────────────────── */
+@layer components {
+  /* Flat solid card */
+  .flat-card {
+    background-color: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1rem;
+    transition: border-color 0.2s ease;
+  }
+  .flat-card:hover {
+    border-color: var(--border-hover);
+  }
+
+  /* Solid sidebar */
+  .flat-sidebar {
+    background-color: var(--surface-elevated);
+    border-right: 1px solid var(--border-subtle);
+  }
+
+  /* Solid accent text */
+  .text-brass {
+    color: var(--accent-brass);
+  }
+
+  /* Solid border block */
+  .border-brass {
+    border: 1px solid var(--accent-brass);
+  }
+
+  /* Flat Brass Button */
+  .btn-primary {
+    background-color: var(--accent-brass);
+    color: var(--bg-color);
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+  }
+  .btn-primary:hover {
+    background-color: var(--accent-brass-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-level-2);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    background-color: var(--on-surface-variant);
+    color: var(--on-surface-muted);
+  }
+
+  /* Flat Input fields */
+  .input-flat {
+    background-color: var(--surface-base);
+    border: 1px solid var(--border-subtle);
+    color: var(--on-surface);
+    transition: all 0.2s ease;
+  }
+  .input-flat::placeholder {
+    color: var(--on-surface-variant);
+  }
+  .input-flat:focus {
+    border-color: var(--accent-brass);
+    outline: none;
+    background-color: var(--surface-elevated);
+  }
+
+  /* Range slider styling */
+  .range-brass {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--surface-base);
+    border: 1px solid var(--border-subtle);
+    outline: none;
+  }
+  .range-brass::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent-brass);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+  .range-brass::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+  }
+}

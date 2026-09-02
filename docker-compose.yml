@@ -1,0 +1,33 @@
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: face_auth_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount data so enrolled faces persist across container restarts
+      - ./backend/data:/app/data
+      # Cache Hugging Face models so they don't re-download on every restart
+      - hf_cache:/root/.cache/huggingface
+      # Cache InsightFace models (buffalo_l etc.) so they don't re-download
+      - insightface_cache:/root/.insightface
+    env_file:
+      - ./backend/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: face_auth_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  hf_cache:
+  insightface_cache:
