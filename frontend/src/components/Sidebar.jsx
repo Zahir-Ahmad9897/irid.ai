@@ -31,8 +31,8 @@ export default function Sidebar() {
     <nav aria-label="Main navigation" className="h-screen w-64 fixed left-0 top-0 flat-sidebar flex flex-col z-50">
       {/* Logo */}
       <div className="p-lg flex items-center gap-md border-b border-border-subtle">
-        <div className="w-10 h-10 rounded-xl border-brass flex items-center justify-center shrink-0 bg-surface-elevated">
-          <Fingerprint className="w-5 h-5 text-accent-brass" />
+        <div className="w-10 h-10 shrink-0 flex items-center justify-center">
+          <img src="/irid.ai-logo.png" alt="irid.ai logo" className="w-full h-full object-contain" />
         </div>
         <div>
           <h1 className="text-[17px] leading-tight font-bold text-brass">

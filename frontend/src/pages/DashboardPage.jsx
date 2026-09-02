@@ -5,9 +5,10 @@ import { ScanFace, UserPlus, Fingerprint, ArrowRight, Shield, Zap, Video, Layers
 export default function DashboardPage() {
   return (
     <div className="max-w-4xl animate-slide-up">
-      {/* Header section similar to preview (logo handled in sidebar, so just welcome here) */}
       <div className="flex items-center gap-sm mb-xs">
-        <Fingerprint className="w-6 h-6 text-accent-brass" strokeWidth={1.5} />
+        <div className="w-8 h-8 shrink-0 flex items-center justify-center">
+          <img src="/irid.ai-logo.png" alt="irid.ai logo" className="w-full h-full object-contain" />
+        </div>
         <h1 className="text-[20px] font-medium text-on-surface">Welcome to irid.ai</h1>
       </div>
       <p className="text-[13px] text-on-surface-variant max-w-xl mb-lg leading-relaxed">
