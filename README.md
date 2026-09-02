@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/fingerprint.svg" alt="irid.ai logo" width="60" height="60">
+  <img src="./irid.ai-logo.png" alt="irid.ai logo" width="60" height="60">
   
   <h1>irid.ai</h1>
   <p><strong>Enterprise-grade Biometric Intelligence Platform</strong></p>
