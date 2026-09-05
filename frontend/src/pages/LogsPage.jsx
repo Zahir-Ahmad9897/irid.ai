@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { CheckCircle2, XCircle, ScrollText } from 'lucide-react';
 import DataGrid from '../components/DataGrid.jsx';
 import { fetchLogs } from '../api.js';
-import { seedLogs } from '../mock.js';
 import { useToast } from '../components/ui.jsx';
 
 const STATUS_OPTIONS = [
@@ -25,11 +24,8 @@ export default function LogsPage() {
       try {
         const data = await fetchLogs();
         if (!cancelled) setLogs(Array.isArray(data) ? data : data?.logs || []);
-      } catch {
-        if (!cancelled) {
-          setLogs(seedLogs());
-          toast.info('Backend unreachable — showing demo log data.');
-        }
+      } catch (err) {
+        if (!cancelled) toast.error('Failed to load system logs.');
       } finally {
         if (!cancelled) setLoading(false);
       }

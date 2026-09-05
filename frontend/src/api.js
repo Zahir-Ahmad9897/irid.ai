@@ -2,9 +2,7 @@
 // default so requests go to same-origin `/api/...`, which nginx reverse-
 // proxies to the backend container. For local dev without Docker, set
 // VITE_API_URL=http://localhost:8000 in .env — matches `uvicorn api.main:app
-// --port 8000`. Only /health, /enroll, and /recognize exist on that backend
-// today; everything else in this file targets endpoints it doesn't expose
-// yet and relies on the demo-data fallback in mock.js.
+// --port 8000`.
 export const API_URL = import.meta.env.VITE_API_URL || '';
 
 /**

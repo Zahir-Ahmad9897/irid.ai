@@ -8,6 +8,7 @@ and recognition using the ONNX FaceRecognizer engine.
 import logging
 import os
 from contextlib import asynccontextmanager
+from api.auth import router as auth_router, init_auth_db
 
 import cv2
 import numpy as np
@@ -17,6 +18,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.schemas import DetectionPrediction, EnrollmentResponse, RecognitionResponse
 from src.config import DEFAULT_SIMILARITY_THRESHOLD
 from src.recognizer import FaceRecognizer
+from src.db import init_db, insert_log, insert_audit, get_db
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +33,9 @@ MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Initialize heavy resources at startup, clean up on shutdown."""
+    logger.info("Initializing SQLite database...")
+    init_db()
+    init_auth_db()
     logger.info("Loading FaceRecognizer model...")
     app.state.recognizer = FaceRecognizer()
     logger.info("FaceRecognizer ready.")
@@ -52,6 +57,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(auth_router)
 
 
 def decode_image_file(file_bytes: bytes) -> np.ndarray:
@@ -110,10 +116,15 @@ async def enroll_face(
             detail=result["message"],
         )
 
+    # Log the enrollment action
+    enrolled_name = result.get("enrolled_name")
+    insert_log(camera="System Enrollment", name=enrolled_name, status="known", confidence=1.0)
+    insert_audit(action="ENROLL_IDENTITY", target=enrolled_name, actor="admin")
+
     return EnrollmentResponse(
         status=result["status"],
         message=result["message"],
-        enrolled_name=result.get("enrolled_name"),
+        enrolled_name=enrolled_name,
         samples_count=result.get("samples_count"),
     )
 
@@ -140,18 +151,71 @@ async def recognize_face(
     recognizer = app.state.recognizer
     predictions_data = recognizer.recognize(image=image, threshold=threshold)
 
-    predictions = [
-        DetectionPrediction(
+    predictions = []
+    for pred in predictions_data:
+        predictions.append(DetectionPrediction(
             bbox=pred["bbox"],
             name=pred["name"],
             similarity=pred["similarity"],
             matched=pred["matched"],
-        )
-        for pred in predictions_data
-    ]
+        ))
+        # Log to database
+        status_str = "known" if pred["matched"] else "unknown"
+        insert_log(camera="Camera 1", name=pred["name"], status=status_str, confidence=pred["similarity"])
 
     return RecognitionResponse(
         status="success",
         detected_faces=len(predictions),
         predictions=predictions,
     )
+
+
+@app.get("/identities", status_code=status.HTTP_200_OK, summary="List all enrolled identities")
+async def list_identities():
+    """Returns a list of unique enrolled identities with their sample counts."""
+    recognizer = app.state.recognizer
+    return recognizer.get_identities()
+
+
+@app.delete("/identities/{name}", status_code=status.HTTP_200_OK, summary="Delete an identity")
+async def delete_identity(name: str):
+    """Deletes all embeddings for a given identity from the gallery."""
+    recognizer = app.state.recognizer
+    res = recognizer.delete_identity(name)
+    if res["status"] == "error":
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=res["message"])
+    
+    insert_audit(action="DELETE_IDENTITY", target=name, actor="admin")
+    return res
+
+
+@app.get("/audit-log", status_code=status.HTTP_200_OK, summary="Get deletion audit log")
+async def get_audit_log():
+    """Returns the history of deleted identities."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT 100")
+        rows = cursor.fetchall()
+        return [dict(row) for row in rows]
+
+
+@app.get("/logs", status_code=status.HTTP_200_OK, summary="Get system recognition logs")
+async def get_logs(status: str = None, search: str = None):
+    """Returns system logs with optional filtering by status (known/unknown) and search string."""
+    with get_db() as conn:
+        cursor = conn.cursor()
+        query = "SELECT * FROM system_logs WHERE 1=1"
+        params = []
+        
+        if status and status != "all":
+            query += " AND status = ?"
+            params.append(status)
+            
+        if search:
+            query += " AND name LIKE ?"
+            params.append(f"%{search}%")
+            
+        query += " ORDER BY timestamp DESC LIMIT 500"
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        return [dict(row) for row in rows]

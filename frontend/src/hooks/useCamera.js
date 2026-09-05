@@ -58,12 +58,12 @@ export function useCamera() {
         };
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         streamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play().catch(() => {});
-        }
         const track = stream.getVideoTracks()[0];
         if (track) setDeviceId(track.getSettings().deviceId || preferredDeviceId || null);
+        // Don't attach to videoRef.current here — the <video> element only
+        // renders once status === 'active', so it may not exist in the DOM
+        // yet at this point. Attaching happens in the effect below, which
+        // runs after React has committed the <video> element to the DOM.
         setStatus('active');
         await refreshDevices();
       } catch (err) {
@@ -79,6 +79,19 @@ export function useCamera() {
     },
     [refreshDevices, stop]
   );
+
+  // Attach the active stream to the <video> element once it exists in the
+  // DOM. This runs after every render where status is 'active', so it
+  // covers both the "video mounts after start() resolves" race and any
+  // later remounts of the element.
+  useEffect(() => {
+    if (status === 'active' && streamRef.current && videoRef.current) {
+      if (videoRef.current.srcObject !== streamRef.current) {
+        videoRef.current.srcObject = streamRef.current;
+      }
+      videoRef.current.play().catch(() => { });
+    }
+  }, [status]);
 
   useEffect(() => {
     refreshDevices();

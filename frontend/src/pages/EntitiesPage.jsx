@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Users, Trash2, ScrollText } from 'lucide-react';
 import { listIdentities, deleteIdentity, fetchAuditLog } from '../api.js';
-import { seedIdentities, seedAuditLog } from '../mock.js';
 import { ConfirmModal, SkeletonCard, useToast } from '../components/ui.jsx';
 
 export default function EntitiesPage() {
@@ -18,10 +17,8 @@ export default function EntitiesPage() {
       const [ids, audit] = await Promise.all([listIdentities(), fetchAuditLog()]);
       setIdentities(Array.isArray(ids) ? ids : ids?.identities || []);
       setAuditLog(Array.isArray(audit) ? audit : audit?.entries || []);
-    } catch {
-      setIdentities(seedIdentities());
-      setAuditLog(seedAuditLog());
-      toast.info('Backend unreachable — showing demo identity data.');
+    } catch (err) {
+      toast.error('Failed to load data from backend.');
     } finally {
       setLoading(false);
     }
